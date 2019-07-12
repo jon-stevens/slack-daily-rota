@@ -29,6 +29,27 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
+app.get('/auth/redirect', (req, res) => {
+    const options = {
+        uri: 'https://slack.com/api/oauth.access?code='
+            +req.query.code+
+            '&client_id='+config.slackClientId+
+            '&client_secret='+config.slackClientSecret+
+            '&redirect_uri=/rota',
+        method: 'GET'
+    };
+    request(options, (error, response, body) => {
+        const JSONresponse = JSON.parse(body);
+        if (!JSONresponse.ok) {
+            console.log(JSONresponse);
+            res.send("Error encountered: \n"+JSON.stringify(JSONresponse)).status(200).end();
+        } else {
+            console.log(JSONresponse);
+            res.send("Success!");
+        }
+    });
+});
+
 app.post('/rota', (req, res) => {
 	if (req.body) {
 		console.log('Received request', req.body);
