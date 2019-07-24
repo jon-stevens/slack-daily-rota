@@ -193,9 +193,7 @@ function rota(slackMessage) {
 
 function handle(slackMessage) {
 	if (slackMessage.text.startsWith('today')) {
-		rota(slackMessage).catch(e =>{
-			console.trace(e);
-		});
+		rota(slackMessage).catch(handleError);
 	} else if (slackMessage.text.startsWith('skip')) {
 		rota(slackMessage).catch(handleError);
 	} else {
