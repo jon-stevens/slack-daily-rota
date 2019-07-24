@@ -170,13 +170,13 @@ function handleError(e) {
 }
 
 function rota(slackMessage) {
-	const who = new WhosNext();
-	return who.showName(slackMessage);
+	const who = new WhosNext(slackMessage);
+	return who.showName();
 }
 
 function handle(slackMessage) {
 	if (slackMessage.text.startsWith('today')) {
-		rota.showName(slackMessage).catch(handleError);
+		rota(slackMessage).catch(handleError);
 	} else if (slackMessage.text.startsWith('skip')) {
 		rota(slackMessage).catch(handleError);
 	} else {
