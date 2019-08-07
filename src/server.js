@@ -3,7 +3,8 @@ const {
 } = require('worker_threads');
 const express = require('express');
 const dotenv = require('dotenv');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const request = require("request");
 
 dotenv.config();
 
@@ -29,7 +30,10 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.get('/auth/redirect', (req, res) => {
+app.set('view engine', 'pug');
+app.set('views', './src/views')
+
+app.post('/auth/redirect', (req, res) => {
     const options = {
         uri: 'https://slack.com/api/oauth.access?code='
             +req.query.code+
@@ -41,10 +45,8 @@ app.get('/auth/redirect', (req, res) => {
     request(options, (error, response, body) => {
         const JSONresponse = JSON.parse(body);
         if (!JSONresponse.ok) {
-            console.log(JSONresponse);
             res.send("Error encountered: \n"+JSON.stringify(JSONresponse)).status(200).end();
         } else {
-            console.log(JSONresponse);
             res.send("Success!");
         }
     });
@@ -75,17 +77,18 @@ app.post('/rota', (req, res) => {
 	}
 });
 
-// app.post('/whosnext', (req, res) => {
-// 	if (req.body) {
-// 		console.log('Received request', req.body);
-// 	}
+app.post('/who', (req, res) => {
+	// const slackMessage = req.body;
+	const slackMessage = {
+		text: 'today'
+	};
+	worker.postMessage(slackMessage);
+	res.render('index', { title: 'Message sent!', message: 'Message sent!'});
+});
 
-// 	if (!req.body || req.body.token !== config.slackToken) {
-// 		return res.status(401).send('Invalid credentials');
-// 	}
-	
-// 	worker.postMessage(slackMessage);
-// });
+app.get('/', (req, res) => {
+	res.render('index', { title: 'Rota!', message: 'Rota!'});
+});
 
 module.exports = {
 	app,

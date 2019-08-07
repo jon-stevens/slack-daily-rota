@@ -3,7 +3,7 @@ const request = require('request');
 const fs = require('fs');
 
 const config = workerData;
-const dataFilePath = 'rota-data.json';
+const dataFilePath = './src/rota-data.json';
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
@@ -17,7 +17,7 @@ function sendMessage(slackMessage, payload, isEphemeral = false) {
 
 	return new Promise((resolve, reject) => {
 		request.post({
-			url: isEphemeral ? 'https://slack.com/api/chat.postEphemeral' : 'https://slack.com/api/chat.postMessage',
+			url: isEphemeral ? 'https://slack.com/api/chat.postEphemeral' : 'https://hooks.slack.com/services/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',
 			json: true,
 			body: requestBody,
 			headers: {
@@ -29,7 +29,7 @@ function sendMessage(slackMessage, payload, isEphemeral = false) {
 				reject(error);
 				return;
 			} else if (!responseBody.ok) {
-				reject(responseBody.error);
+				reject('error', responseBody.error);
 				return;
 			}
 
@@ -43,95 +43,110 @@ function sendEphemeralMessage(slackMessage, text) {
 }
 
 function getRotaData() {
-	return new Promise(resolve, reject => {
-		fs.readFile(dataFilePath, (err, data) => {
+	return new Promise((resolve, reject) => {
+		fs.readFile(dataFilePath, 'utf8', (err, data) => {
 			if (err) {
-				console.log(err);
 				reject(err);
 			}
-			resolve(JSON.parse(data.toString()));
+			// resolve(JSON.parse(data.toString()));
+			resolve(JSON.parse(data));
 		});
 	});
 }
 
 function setRotaData(dataObj) {
-	fs.writeFileSync(dataFilePath, JSON.stringify(Object.assign({}, ...dataObj)), err => {
-		if (err) {
-			console.log(err);
-			return;
-		}
-	});	
+	console.log('dataObj', dataObj);
+	return new Promise((resolve, reject) => {
+		fs.writeFileSync(dataFilePath, JSON.stringify(dataObj), err => {
+			if (err) {
+				console.trace(err);
+				reject(err);
+			}
+			resolve(console.log('data saved to file!'));
+		});	
+	});
 }
 
 class WhosNext {
-	constructor() {
+	constructor(slackMessage) {
 		this.people = [{
 			name: 'Colleen',
-			username: ''
+			username: '@colleen.mckeever'
 		},
 		{
 			name: 'Marleen',
-			username: ''
+			username: '@marleen'
 		},
 		{
 			name: 'Amit',
-			username: ''
+			username: '@amit gupta'
 		},
 		{
 			name: 'Tom',
-			username: ''
+			username: '@tombarnsbury'
 		},
 		{
 			name: 'Priyo',
-			username: ''
+			username: '@priyoaujla'
 		},
 		{
 			name: 'Rakesh',
-			username: ''
+			username: '@rakesh.sharma'
 		},
 		{
 			name: 'Dmitry',
-			username: ''
+			username: '@dmitrykandalov'
 		},
 		{
 			name: 'Jon S.',
-			username: ''
+			username: '@Jon'
 		},
 		{
 			name: 'Anibe',
-			username: ''
+			username: '@anibe'
 		},
 		{
 			name: 'Mirren',
-			username: ''
+			username: '@Mirren'
 		},
 		{
 			name: 'Isabel',
-			username: ''
+			username: '@Isabel Buettner'
 		}];
 		this.nonActiveDays = [6, 0]; // Saturday (6) and Sunday (0)
 		this.dailyAlertTime24h = '0830';
 		this.rotaIndex = 0;
+		this.slackMessage = slackMessage;
 	}
 
-	showName() {
-		const isTodayActiveDay = this.nonActiveDays.includes(new Date().getDay());
-		if (isTodayActiveDay) {
-			const person = this._getActivePerson();
+	async showName() {
+		const isTodayNonActiveDay = this.nonActiveDays.includes(new Date().getDay());
+		if (!isTodayNonActiveDay) {
+			const person = await this._getActivePerson();
 			const blocks = [
 				{
 					type: 'section',
 					text: {
 						type: 'mrkdwn',
-						text: `Get ready ${person.name}! You're running stand-up today :wiggle_cat:.\nRemotes join here: https://hangouts.google.com/hangouts/_/springer.com/standup?pli=1&authuser=1`
+						text: `Get ready ${person.username}! You're running stand-up today :wiggle_cat:.`
 					}
 				}
 			];
 	
 			// Used for the notifications on desktop or mobile
-			const text = `${person.name}i s running stand-up today`;
-	
-			return sendMessage(slackMessage, {blocks, text});			
+			const text = `${person.name} is running stand-up today`;
+
+			return sendMessage(this.slackMessage, {blocks, text});			
+		} else {
+			console.log('not an active day');
+			const text = 'Today is not an active workday';
+			return sendMessage(this.slackMessage, {blocks: [{
+				type: 'section',
+				text: {
+					type: 'mrkdwn',
+					text
+				}
+			}], text});
 		}
 	}
 
@@ -142,41 +157,45 @@ class WhosNext {
 	_getActivePerson() {
 		let index = 0;
 
-		getRotaData().then(fileData => {
+		return getRotaData().then(fileData => {
 			const numberOfPeople = this.people.length - 1;
 			const rotaPositionIndex = fileData.rotaIndex;
 			const dateLastUpdated = fileData.date;
-			const today = new Date();
+			const today = new Date().toDateString();
 
 			if (today === dateLastUpdated) {
 				index = rotaPositionIndex;
 			}
 
 			setRotaData({
-				rotaIndex: numberOfPeople === index ? 0 : index++,
+				rotaIndex: numberOfPeople === index ? 0 : parseInt(index, 10) + 1,
 				date: today
 			});
+			return this.people[index];
+		}).catch(e =>{
+			console.log('unable to get active person', e);
 		});
-
-		return this.people[index];
 	}
 }
 
 function handleError(e) {
-	console.error({
-		message: e.message || e,
+	console.log({
+		// message: e.message || e,
+		message: e,
 		originalError: e
 	});
 }
 
 function rota(slackMessage) {
-	const who = new WhosNext();
-	return who.showName(slackMessage);
+	const who = new WhosNext(slackMessage);
+	return who.showName();
 }
 
 function handle(slackMessage) {
 	if (slackMessage.text.startsWith('today')) {
-		rota.showName(slackMessage).catch(handleError);
+		rota(slackMessage).catch(e =>{
+			console.trace(e);
+		});
 	} else if (slackMessage.text.startsWith('skip')) {
 		rota(slackMessage).catch(handleError);
 	} else {
