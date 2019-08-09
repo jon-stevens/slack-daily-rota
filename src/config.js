@@ -9,6 +9,7 @@ const config = () => {
         slackClientId: process.env.SLACK_CLIENT_ID,
         slackClientSecret: process.env.SLACK_CLIENT_SECRET,
         slackHookUrl: process.env.SLACK_HOOK_URL,
+        appUrl: process.env.APP_URL,
         port: process.env.PORT
     }
 }

@@ -1,21 +1,9 @@
-const {
-	Worker
-} = require('worker_threads');
-
+const request = require('request');
 const config = require('./config');
 
-const worker = new Worker('./src/worker.js', {workerData: config});
-worker.on('error', (error) => {
-	throw error;
+request.post(config.appUrl, (err, res, body) => {
+	console.error('error:', err); // Print the error if one occurred
+	console.log('statusCode:', res && res.statusCode);
 });
-worker.on('exit', (code) => {
-	if (code !== 0)
-		throw new Error(`Worker stopped with exit code ${code}`);
-});
-
-const slackMessage = {
-    text: 'today'
-};
-worker.postMessage(slackMessage);
 
 // process.exit(1);
