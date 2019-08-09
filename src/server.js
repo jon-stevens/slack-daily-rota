@@ -77,13 +77,20 @@ app.post('/rota', (req, res) => {
 	}
 });
 
-app.post('/who', (req, res) => {
-	// const slackMessage = req.body;
+function who(req, res) {
 	const slackMessage = {
 		text: 'today'
 	};
 	worker.postMessage(slackMessage);
 	res.render('index', { title: 'Message sent!', message: 'Message sent!'});
+}
+
+app.post('/who', (req, res) => {
+	who(req, res);
+});
+
+app.get('/who', (req, res) => {
+	who(req, res);
 });
 
 app.get('/', (req, res) => {
