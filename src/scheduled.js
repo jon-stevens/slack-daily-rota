@@ -1,17 +1,8 @@
 const {
 	Worker
 } = require('worker_threads');
-const dotenv = require('dotenv');
 
-dotenv.config();
-
-const config = {
-	slackToken: process.env.SLACK_TOKEN,
-	slackOAuthToken: process.env.SLACK_OAUTH_TOKEN,
-	slackClientId: process.env.SLACK_CLIENT_ID,
-	slackClientSecret: process.env.SLACK_CLIENT_SECRET,
-	port: process.env.PORT
-};
+const config = require('./config');
 
 const worker = new Worker('./src/worker.js', {workerData: config});
 worker.on('error', (error) => {
