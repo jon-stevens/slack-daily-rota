@@ -66,6 +66,26 @@ function setRotaData(dataObj) {
 	});
 }
 
+function generateRandomMessage(id) {
+
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	const messages = [
+		`Get ready ${id}! You're running stand-up today :wiggle_cat:`,
+		`Hey ${id} guess what? It's your turn to run stand-up today! :100:`,
+		`Today is going to be awesome because it's ${id}'s turn at running stand-up :+1:`,
+		`Prepare for an epic stand-up, run by ${id} today :muscle:`,
+		`${id} runs the best stand-ups! Find out how at 9.40 :tada:`,
+		`Gather round ${id} and prepare to have your mind blown :mindblown:`
+	];
+
+	return messages[getRandomInt(0, messages.length - 1)];
+}
+
 class WhosNext {
 	constructor(slackMessage) {
 		this.people = [{
@@ -122,18 +142,19 @@ class WhosNext {
 		const isTodayNonActiveDay = this.nonActiveDays.includes(new Date().getDay());
 		if (!isTodayNonActiveDay) {
 			const person = await this._getActivePerson();
+			const msgTxt = generateRandomMessage(person.username);
 			const blocks = [
 				{
 					type: 'section',
 					text: {
 						type: 'mrkdwn',
-						text: `Get ready ${person.username}! You're running stand-up today :wiggle_cat:.`
+						text: msgTxt
 					}
 				}
 			];
 	
 			// Used for the notifications on desktop or mobile
-			const text = `${person.name} is running stand-up today`;
+			const text = msgTxt;
 
 			return sendMessage(this.slackMessage, {blocks, text});			
 		} else {
