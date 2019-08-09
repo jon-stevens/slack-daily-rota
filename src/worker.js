@@ -79,8 +79,7 @@ function generateRandomMessage(id) {
 		`Hey ${id} guess what? It's your turn to run stand-up today! :100:`,
 		`Today is going to be awesome because it's ${id} 's turn at running stand-up :+1:`,
 		`Prepare for an epic stand-up, run by ${id} today :muscle:`,
-		`${id} runs the best stand-ups! Find out how at 9.40 :tada:`,
-		`Gather round ${id} and prepare to have your mind blown :mindblown:`
+		`${id} runs the best stand-ups! Find out how at 9.40 :tada:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
@@ -90,47 +89,47 @@ class WhosNext {
 	constructor(slackMessage) {
 		this.people = [{
 			name: 'Colleen',
-			username: '@colleen.mckeever'
+			username: '<@colleen.mckeever>'
 		},
 		{
 			name: 'Marleen',
-			username: '@marleen'
+			username: '<@marleen>'
 		},
 		{
 			name: 'Amit',
-			username: '@amit gupta'
+			username: '<@amit gupta>'
 		},
 		{
 			name: 'Tom',
-			username: '@tombarnsbury'
+			username: '<@tombarnsbury>'
 		},
 		{
 			name: 'Priyo',
-			username: '@priyoaujla'
+			username: '<@priyoaujla>'
 		},
 		{
 			name: 'Rakesh',
-			username: '@rakesh.sharma'
+			username: '<@rakesh.sharma>'
 		},
 		{
 			name: 'Dmitry',
-			username: '@dmitrykandalov'
+			username: '<@dmitrykandalov>'
 		},
 		{
 			name: 'Jon S.',
-			username: '@Jon'
+			username: '<@Jon>'
 		},
 		{
 			name: 'Anibe',
-			username: '@anibe'
+			username: '<@anibe>'
 		},
 		{
 			name: 'Mirren',
-			username: '@Mirren'
+			username: '<@Mirren>'
 		},
 		{
 			name: 'Isabel',
-			username: '@Isabel Buettner'
+			username: '<@Isabel Buettner>'
 		}];
 		this.nonActiveDays = [6, 0]; // Saturday (6) and Sunday (0)
 		this.dailyAlertTime24h = '0830';
