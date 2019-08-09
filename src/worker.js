@@ -17,7 +17,7 @@ function sendMessage(slackMessage, payload, isEphemeral = false) {
 
 	return new Promise((resolve, reject) => {
 		request.post({
-			url: isEphemeral ? 'https://slack.com/api/chat.postEphemeral' : 'https://hooks.slack.com/services/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',
+			url: isEphemeral ? 'https://slack.com/api/chat.postEphemeral' : config.slackHookUrl,
 			json: true,
 			body: requestBody,
 			headers: {
@@ -48,7 +48,6 @@ function getRotaData() {
 			if (err) {
 				reject(err);
 			}
-			// resolve(JSON.parse(data.toString()));
 			resolve(JSON.parse(data));
 		});
 	});
@@ -179,8 +178,7 @@ class WhosNext {
 }
 
 function handleError(e) {
-	console.log({
-		// message: e.message || e,
+	console.trace({
 		message: e,
 		originalError: e
 	});
