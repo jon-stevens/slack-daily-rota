@@ -77,9 +77,7 @@ function generateRandomMessage(id) {
 	const messages = [
 		`Get ready ${id} ! You're running stand-up today :wiggle_cat:`,
 		`Hey ${id} guess what? It's your turn to run stand-up today! :100:`,
-		`Today is going to be awesome because it's ${id} 's turn at running stand-up :+1:`,
-		`Prepare for an epic stand-up, run by ${id} today :muscle:`,
-		`${id} runs the best stand-ups! Find out how at 9.40 :tada:`
+		`Prepare for an epic stand-up, run by ${id} today :muscle:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
