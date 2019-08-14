@@ -43,37 +43,16 @@ app.post('/auth/redirect', (req, res) => {
     });
 });
 
-app.post('/rota', (req, res) => {
-	if (req.body) {
-		console.log('Received request', req.body);
-	}
-
-	if (!req.body || req.body.token !== config.slackToken) {
-		return res.status(401).send('Invalid credentials');
-	}
-
-	if (req.body.text.match(/today|skip/) !== null) {
-		const slackMessage = req.body;
-
-		res.status(200).end();
-
-		worker.postMessage(slackMessage);
-	} else {
-		res.json(
-			{
-				response_type: 'ephemeral',
-				text: `Invalid command: \`${req.body.text}\``
-			}
-		);
-	}
-});
+const appData = {
+	title: 'Slack Rota App'
+};
 
 function who(req, res) {
 	const slackMessage = {
 		text: 'today'
 	};
 	worker.postMessage(slackMessage);
-	res.render('index', { title: 'Message sent!', message: 'Message sent!'});
+	res.render('index', { title: appData.title, message: 'Message sent to slack!'});
 }
 
 app.post('/who', (req, res) => {
@@ -85,7 +64,7 @@ app.get('/who', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-	res.render('index', { title: 'Rota!', message: 'Rota!'});
+	res.render('index', { title: appData.title, message: appData.title});
 });
 
 module.exports = {

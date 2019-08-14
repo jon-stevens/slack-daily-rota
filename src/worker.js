@@ -66,7 +66,7 @@ function updateRotaData(dataObj) {
 				'Content-Type': 'application/json'
 			}
 		}).then(() => {
-			resolve(console.log('data saved to file!'))
+			resolve(console.log('data posted to endpoint!'))
 		}).catch(e => {
 			reject(e);
 		});
@@ -82,13 +82,9 @@ function generateRandomMessage(id) {
 	}
 
 	const messages = [
-		`Get ready ${id} ! You're running stand-up today :wiggle_cat:`,
-		`Hey ${id} guess what? It's your turn to run stand-up today! :100:`,
-		`Prepare for an epic stand-up, run by ${id} today :muscle:`,
-		`Grab your laptop ${id} and get ready to shine :sparkles:`,
 		`I hope you're wearing a nappy, because ${id} is doing a standup today! :happy-sad:`,
 		`Put some seatbealts on your ears, because ${id} is totally going to take them on an epic journey in today's standup`,
-		`${id} wants everybody to know that she is going to do a standup today and that everybody better be ready for it :happy-sad:`,
+		`${id} wants everybody to know that they are going to do a standup today and that everybody better be ready for it :happy-sad:`,
 		`${id} is going to make you question the futility of your own existence in today's standup`,
 		`Clear your diaries because ${id} is going to standup at you today, and it doesn't get much better than that! :excited:`,
 		`Future ${id} just appeared in a dustbin and told me that past ${id} did the best most amazing standup this morning, so make sure you're wearing socks.`,
@@ -99,9 +95,9 @@ function generateRandomMessage(id) {
 		`Last time Rakesh pushed me down the stairs, ${id} came to me in a dream and said don't worry. One day I will be doing a standup and you will forget about your broken legs. ${id} we love you. :boxing_glove:`,
 		`Have you forgotten the sensation of joy? Have you woken up today feeling like a wooden ladder? Don't worry, ${id} will run today's standup and we are all going to feel good again.`,
 		`Make standups great again, ${id}! Bless your tiny tiny miraculous face`,
-		`${id} is doing a standup today, and after that big fight he had on the train this morning, it should be a lively one :ballmer:`,
-		`${id} is doing the full standup experience today, remember not to mention how he tried to force Jovi to live in the fridge for a week, we're not supposed to mention that. :jackfruit:`,
-		`All the rumours about ${id} are untrue, she is doing a standup this morning, and isn't even allergic to eggs. :egg:`,
+		`${id} is doing a standup today, and after that big fight they had on the train this morning, it should be a lively one :ballmer:`,
+		`${id} is doing the full standup experience today, remember not to mention how they tried to force Jovi to live in the fridge for a week, we're not supposed to mention that. :jackfruit:`,
+		`All the rumours about ${id} are untrue, they are doing a standup this morning, and isn't even allergic to eggs. :egg:`,
 		`Remember the last time ${id} did the standup, and there was a big fight at the end, and Dmitry took his shoes off and chased everyone Oh wait that was a dream. I think it probably won't be that good.`,
 		`I heard ${id} was caught trying to iron a homeless dog this morning. I hope they are still OK to do the standup.`,
 		`When ${id} does the standup it feels like you are slipping into an enormous warm quiche, and before long you start wishing you had been born this way, why why am I a shell-less human? Destined for nothing but suffering and confusion? I want to be have a quiche-shell.`,
@@ -109,7 +105,7 @@ function generateRandomMessage(id) {
 		`Take me far away, and put some cheese in my ears, because ${id} is doing the standup today. I am filled with dread.`,
 		`Whenever ${id} does the standup, my feet shift uncomfortably, like an embarrassed gearbox. But it is not from boredom, or guilt, or worrying about that unresolved blood debt. It's because ${id} has a voice like a bassoon.`,
 		`:cat2: is doing a standup this morning. Oh wait it's ${id} I think. Not :cat2: who is a cat and therefore a total dumbo. :happy-sad:`,
-		`${id} is presenting today's standup, live from Nottingham County Court, where he is facing charges of trying to demolish his local newsagents with a stolen steamroller.`,
+		`${id} is presenting today's standup, live from Nottingham County Court, where they are facing charges of trying to demolish his local newsagents with a stolen steamroller.`,
 		`${id} is going to do today's standup in French. So I hope you speak French.`
 	];
 
@@ -135,8 +131,8 @@ class WhosNext {
 			username: '<@tombarnsbury>'
 		},
 		{
-			name: 'Priyo',
-			username: '<@priyoaujla>'
+			name: 'Slava',
+			username: '<@slava>'
 		},
 		{
 			name: 'Rakesh',
