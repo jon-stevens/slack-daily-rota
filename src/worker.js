@@ -1,9 +1,8 @@
 const {workerData, parentPort} = require('worker_threads');
 const request = require('request');
-const fs = require('fs');
+const fetch = require("node-fetch");
 
 const config = workerData;
-const dataFilePath = './src/rota-data.json';
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
@@ -44,25 +43,33 @@ function sendEphemeralMessage(slackMessage, text) {
 
 function getRotaData() {
 	return new Promise((resolve, reject) => {
-		fs.readFile(dataFilePath, 'utf8', (err, data) => {
-			if (err) {
+		fetch(config.getRotaUrl)
+			.then(response => {
+				return response.json();
+			})
+			.then(data => {
+				console.log(data);
+				resolve(data);
+			}).catch(err => {
 				reject(err);
-			}
-			resolve(JSON.parse(data));
-		});
-	});
+			});
+	});	
 }
 
-function setRotaData(dataObj) {
+function updateRotaData(dataObj) {
 	console.log('dataObj', dataObj);
 	return new Promise((resolve, reject) => {
-		fs.writeFileSync(dataFilePath, JSON.stringify(dataObj), err => {
-			if (err) {
-				console.trace(err);
-				reject(err);
+		fetch(config.updateRotaUrl, {
+			method: 'POST',
+			body: JSON.stringify(dataObj),
+			headers: {
+				'Content-Type': 'application/json'
 			}
-			resolve(console.log('data saved to file!'));
-		});	
+		}).then(() => {
+			resolve(console.log('data saved to file!'))
+		}).catch(e => {
+			reject(e);
+		});
 	});
 }
 
@@ -77,7 +84,8 @@ function generateRandomMessage(id) {
 	const messages = [
 		`Get ready ${id} ! You're running stand-up today :wiggle_cat:`,
 		`Hey ${id} guess what? It's your turn to run stand-up today! :100:`,
-		`Prepare for an epic stand-up, run by ${id} today :muscle:`
+		`Prepare for an epic stand-up, run by ${id} today :muscle:`,
+		`Grab your laptop ${id} and get ready to shine :sparkles:`,
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
@@ -156,7 +164,7 @@ class WhosNext {
 			return sendMessage(this.slackMessage, {blocks, text});			
 		} else {
 			console.log('not an active day');
-			const text = 'Today is not an active workday';
+			const text = 'Today is not an active workday :sleeping:';
 			return sendMessage(this.slackMessage, {blocks: [{
 				type: 'section',
 				text: {
@@ -184,12 +192,12 @@ class WhosNext {
 				index = rotaPositionIndex;
 			}
 
-			setRotaData({
+			updateRotaData({
 				rotaIndex: numberOfPeople === index ? 0 : parseInt(index, 10) + 1,
 				date: today
 			});
 			return this.people[index];
-		}).catch(e =>{
+		}).catch(e => {
 			console.log('unable to get active person', e);
 		});
 	}
