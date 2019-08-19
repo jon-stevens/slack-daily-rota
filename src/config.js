@@ -12,7 +12,8 @@ const config = () => {
         appUrl: process.env.APP_URL,
         getRotaUrl: process.env.ROTA_GET_ENDPOINT,
         updateRotaUrl: process.env.ROTA_UPDATE_ENDPOINT,
-        port: process.env.PORT
+        port: process.env.PORT,
+        databaseUrl: process.env.DATABASE_URL
     }
 }
 

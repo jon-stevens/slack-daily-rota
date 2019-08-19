@@ -1,8 +1,16 @@
-const {workerData, parentPort} = require('worker_threads');
+const { workerData, parentPort } = require('worker_threads');
 const request = require('request');
 const fetch = require("node-fetch");
+const { Client } = require('pg');
 
 const config = workerData;
+
+const db = new Client({
+	connectionString: process.env.DATABASE_URL,
+	ssl: true
+});
+
+db.connect();
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
@@ -38,38 +46,34 @@ function sendMessage(slackMessage, payload, isEphemeral = false) {
 }
 
 function sendEphemeralMessage(slackMessage, text) {
-	return sendMessage(slackMessage, {text}, true);
+	return sendMessage(slackMessage, { text }, true);
 }
 
 function getRotaData() {
 	return new Promise((resolve, reject) => {
-		fetch(config.getRotaUrl)
-			.then(response => {
-				return response.json();
-			})
-			.then(data => {
-				console.log(data);
-				resolve(data);
-			}).catch(err => {
+		db.query('SELECT row_data FROM rota_data WHERE row_id=1;', (err, res) => {
+			if (err) {
 				reject(err);
-			});
-	});	
+				throw err;
+			}
+			const data = res.rows[0].row_data;
+			console.log('res.rows[0]', data);
+			resolve(JSON.parse(data));
+		});
+	});
 }
 
 function updateRotaData(dataObj) {
 	console.log('dataObj', dataObj);
 	return new Promise((resolve, reject) => {
-		fetch(config.updateRotaUrl, {
-			method: 'POST',
-			body: JSON.stringify(dataObj),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(() => {
-			resolve(console.log('data posted to endpoint!'))
-		}).catch(e => {
-			reject(e);
-		});
+		const text = 'UPDATE rota_data SET row_data = ($2) WHERE row_id=($1)';
+		const values = [1, JSON.stringify(dataObj)];
+
+		db.query(text, values)
+			.then(res => {
+				resolve(console.log('data posted to endpoint!'));
+			})
+			.catch(e => reject(e.stack))
 	});
 }
 
@@ -116,47 +120,47 @@ class WhosNext {
 	constructor(slackMessage) {
 		this.people = [{
 			name: 'Colleen',
-			username: '<@colleen.mckeever>'
+			username: '<@U0GJL3M8D>'
 		},
 		{
 			name: 'Marleen',
-			username: '<@marleen>'
+			username: '<@U70KW5VHV>'
 		},
 		{
 			name: 'Amit',
-			username: '<@amit gupta>'
+			username: '<@UHV8K7VN3>'
 		},
 		{
 			name: 'Tom',
-			username: '<@tombarnsbury>'
+			username: '<@U14GHSETH>'
 		},
 		{
 			name: 'Slava',
-			username: '<@slava>'
+			username: '<@UEBPZBRR9>'
 		},
 		{
 			name: 'Rakesh',
-			username: '<@rakesh.sharma>'
+			username: '<@U0GJA3NF6>'
 		},
 		{
 			name: 'Dmitry',
-			username: '<@dmitrykandalov>'
+			username: '<@U4ENT1HUJ>'
 		},
 		{
 			name: 'Jon S.',
-			username: '<@Jon>'
+			username: '<@U7JSC2P9S>'
 		},
 		{
 			name: 'Anibe',
-			username: '<@anibe>'
+			username: '<@U83QSM30D>'
 		},
 		{
 			name: 'Mirren',
-			username: '<@Mirren>'
+			username: '<@UDQQ3RHPF>'
 		},
 		{
 			name: 'Isabel',
-			username: '<@Isabel Buettner>'
+			username: '<@UGNC53L3V>'
 		}];
 		this.nonActiveDays = [6, 0]; // Saturday (6) and Sunday (0)
 		this.dailyAlertTime24h = '0830';
@@ -168,7 +172,7 @@ class WhosNext {
 		const isTodayNonActiveDay = this.nonActiveDays.includes(new Date().getDay());
 		if (!isTodayNonActiveDay) {
 			const person = await this._getActivePerson();
-			const msgTxt = generateRandomMessage(person.username);
+			const msgTxt = generateRandomMessage(`*${person.name}* (${person.username})`);
 			const blocks = [
 				{
 					type: 'section',
@@ -178,21 +182,23 @@ class WhosNext {
 					}
 				}
 			];
-	
+
 			// Used for the notifications on desktop or mobile
 			const text = msgTxt;
 
-			return sendMessage(this.slackMessage, {blocks, text});			
+			return sendMessage(this.slackMessage, { blocks, text });
 		} else {
 			console.log('not an active day');
 			const text = 'Today is not an active workday :sleeping:';
-			return sendMessage(this.slackMessage, {blocks: [{
-				type: 'section',
-				text: {
-					type: 'mrkdwn',
-					text
-				}
-			}], text});
+			return sendMessage(this.slackMessage, {
+				blocks: [{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text
+					}
+				}], text
+			});
 		}
 	}
 
@@ -209,7 +215,10 @@ class WhosNext {
 			const dateLastUpdated = fileData.date;
 			const today = new Date().toDateString();
 
-			if (today === dateLastUpdated) {
+			console.log('rotaPositionIndex', rotaPositionIndex);
+
+			// if (today === dateLastUpdated) {
+			if (fileData) {
 				index = rotaPositionIndex;
 			}
 
