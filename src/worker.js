@@ -1,13 +1,12 @@
 const { workerData, parentPort } = require('worker_threads');
 const request = require('request');
-const fetch = require("node-fetch");
 const { Client } = require('pg');
 
 const config = workerData;
 
 const db = new Client({
 	connectionString: process.env.DATABASE_URL,
-	ssl: true
+	ssl: config.appMode !== 'dev'
 });
 
 db.connect();
@@ -57,14 +56,12 @@ function getRotaData() {
 				throw err;
 			}
 			const data = res.rows[0].row_data;
-			console.log('res.rows[0]', data);
 			resolve(JSON.parse(data));
 		});
 	});
 }
 
 function updateRotaData(dataObj) {
-	console.log('dataObj', dataObj);
 	return new Promise((resolve, reject) => {
 		const text = 'UPDATE rota_data SET row_data = ($2) WHERE row_id=($1)';
 		const values = [1, JSON.stringify(dataObj)];
@@ -102,15 +99,15 @@ function generateRandomMessage(id) {
 		`${id} is doing a standup today, and after that big fight they had on the train this morning, it should be a lively one :ballmer:`,
 		`${id} is doing the full standup experience today, remember not to mention how they tried to force Jovi to live in the fridge for a week, we're not supposed to mention that. :jackfruit:`,
 		`All the rumours about ${id} are untrue, they are doing a standup this morning, and isn't even allergic to eggs. :egg:`,
-		`Remember the last time ${id} did the standup, and there was a big fight at the end, and Dmitry took his shoes off and chased everyone Oh wait that was a dream. I think it probably won't be that good.`,
+		`Remember the last time ${id} did the standup, and there was a big fight at the end, and Dmitry took his shoes off and chased everyone Oh wait that was a dream. I think it probably won't be that good. :dmitryk:`,
 		`I heard ${id} was caught trying to iron a homeless dog this morning. I hope they are still OK to do the standup.`,
 		`When ${id} does the standup it feels like you are slipping into an enormous warm quiche, and before long you start wishing you had been born this way, why why am I a shell-less human? Destined for nothing but suffering and confusion? I want to be have a quiche-shell.`,
 		`${id} has a voice like a beautiful warm wind farm, and today we are going to be filled with renewable energy, after today's STANDUP!`,
 		`Take me far away, and put some cheese in my ears, because ${id} is doing the standup today. I am filled with dread.`,
 		`Whenever ${id} does the standup, my feet shift uncomfortably, like an embarrassed gearbox. But it is not from boredom, or guilt, or worrying about that unresolved blood debt. It's because ${id} has a voice like a bassoon.`,
 		`:cat2: is doing a standup this morning. Oh wait it's ${id} I think. Not :cat2: who is a cat and therefore a total dumbo. :happy-sad:`,
-		`${id} is presenting today's standup, live from Nottingham County Court, where they are facing charges of trying to demolish his local newsagents with a stolen steamroller.`,
-		`${id} is going to do today's standup in French. So I hope you speak French.`
+		`${id} is presenting today's standup, live from Nottingham County Court, where they are facing charges of trying to demolish their local newsagents with a stolen steamroller.`,
+		`${id} is going to do today's standup in French. So I hope you speak French. :flag-fr:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
@@ -214,8 +211,6 @@ class WhosNext {
 			const rotaPositionIndex = fileData.rotaIndex;
 			const dateLastUpdated = fileData.date;
 			const today = new Date().toDateString();
-
-			console.log('rotaPositionIndex', rotaPositionIndex);
 
 			// if (today === dateLastUpdated) {
 			if (fileData) {
