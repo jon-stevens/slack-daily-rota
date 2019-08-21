@@ -160,14 +160,17 @@ class WhosNext {
 			username: '<@UGNC53L3V>'
 		}];
 		this.nonActiveDays = [6, 0]; // Saturday (6) and Sunday (0)
+		this.publicHols = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates
 		this.dailyAlertTime24h = '0830';
 		this.rotaIndex = 0;
 		this.slackMessage = slackMessage;
 	}
 
 	async showName() {
-		const isTodayNonActiveDay = this.nonActiveDays.includes(new Date().getDay());
-		if (!isTodayNonActiveDay) {
+		const today = new Date();
+		const isTodayNonActiveDay = this.nonActiveDays.includes(today.getDay());
+		const isTodayPublicHoliday = this.publicHols.includes(today.toDateString());
+		if (!isTodayNonActiveDay && !isTodayPublicHoliday) {
 			const person = await this._getActivePerson();
 			const msgTxt = generateRandomMessage(`*${person.name}* (${person.username})`);
 			const blocks = [
@@ -185,8 +188,7 @@ class WhosNext {
 
 			return sendMessage(this.slackMessage, { blocks, text });
 		} else {
-			console.log('not an active day');
-			const text = 'Today is not an active workday :sleeping:';
+			const text = 'Today is not an active workday :sleeping: :palm_tree:';
 			return sendMessage(this.slackMessage, {
 				blocks: [{
 					type: 'section',
