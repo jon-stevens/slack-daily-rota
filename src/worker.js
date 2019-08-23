@@ -159,8 +159,8 @@ class WhosNext {
 			name: 'Isabel',
 			username: '<@UGNC53L3V>'
 		}];
-		this.nonActiveDays = [6, 0]; // Saturday (6) and Sunday (0)
-		this.publicHols = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates
+		this.nonWeekDays = [6, 0]; // Saturday (6) and Sunday (0)
+		this.nonWorkDates = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates
 		this.dailyAlertTime24h = '0830';
 		this.rotaIndex = 0;
 		this.slackMessage = slackMessage;
@@ -168,9 +168,9 @@ class WhosNext {
 
 	async showName() {
 		const today = new Date();
-		const isTodayNonActiveDay = this.nonActiveDays.includes(today.getDay());
-		const isTodayPublicHoliday = this.publicHols.includes(today.toDateString());
-		if (!isTodayNonActiveDay && !isTodayPublicHoliday) {
+		const isTodayWeekend = this.nonWeekDays.includes(today.getDay());
+		const isTodayOfficeHoliday = this.nonWorkDates.includes(today.toDateString());
+		if (!isTodayWeekend && !isTodayOfficeHoliday) {
 			const person = await this._getActivePerson();
 			const msgTxt = generateRandomMessage(`*${person.name}* (${person.username})`);
 			const blocks = [
@@ -188,7 +188,7 @@ class WhosNext {
 
 			return sendMessage(this.slackMessage, { blocks, text });
 		} else {
-			const text = 'Today is not an active workday :sleeping: :palm_tree:';
+			const text = 'No standup today :sleeping: :palm_tree:';
 			return sendMessage(this.slackMessage, {
 				blocks: [{
 					type: 'section',
