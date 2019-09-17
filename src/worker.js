@@ -107,7 +107,8 @@ function generateRandomMessage(id) {
 		`Whenever ${id} does the standup, my feet shift uncomfortably, like an embarrassed gearbox. But it is not from boredom, or guilt, or worrying about that unresolved blood debt. It's because ${id} has a voice like a bassoon.`,
 		`:cat2: is doing a standup this morning. Oh wait it's ${id} I think. Not :cat2: who is a cat and therefore a total dumbo. :happy-sad:`,
 		`${id} is presenting today's standup, live from Nottingham County Court, where they are facing charges of trying to demolish their local newsagents with a stolen steamroller.`,
-		`${id} is going to do today's standup in French. So I hope you speak French. :flag-fr:`
+		`${id} is going to do today's standup in French. So I hope you speak French. :flag-fr:`,
+		`In addition to running standup today, ${id} will also be inspecting every team member's socks :socks:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
