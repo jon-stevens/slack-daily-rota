@@ -164,7 +164,8 @@ class WhosNext {
 		this.nonWorkDates = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates
 		this.dailyAlertTime24h = '0830';
 		this.rotaIndex = 0;
-		this.slackMessage = slackMessage;
+		this.slackMessage = slackMessage.command;
+		this.requester = slackMessage.requester;
 	}
 
 	async showName() {
@@ -181,8 +182,34 @@ class WhosNext {
 						type: 'mrkdwn',
 						text: msgTxt
 					}
-				}
+				},
+				{
+					"type": "actions",
+					"elements": [
+						{
+							"type": "button",
+							"text": {
+								"type": "plain_text",
+								"text": `${person.name} ${config.skipButtonMessage}`,
+								"emoji": true
+							}
+						}
+					]
+				}								
 			];
+
+			if (this.requester) {
+				console.log('there is a requester');
+				blocks.push({
+					"type": "context",
+					"elements": [
+						{
+							"type": "mrkdwn",
+							"text": `${this.requester} skipped to the next person.`
+						}
+					]
+				});
+			}
 
 			// Used for the notifications on desktop or mobile
 			const text = msgTxt;
@@ -202,8 +229,9 @@ class WhosNext {
 		}
 	}
 
-	skip() {
-		// TODO		
+	async skip() {
+		console.log('Skipped! Show next member');
+		return this.showName();
 	}
 
 	_getActivePerson() {
@@ -243,11 +271,16 @@ function rota(slackMessage) {
 	return who.showName();
 }
 
+function skip(slackMessage) {
+	const who = new WhosNext(slackMessage);
+	return who.skip();
+}
+
 function handle(slackMessage) {
-	if (slackMessage.text.startsWith('today')) {
+	if (slackMessage.command.startsWith('today')) {
 		rota(slackMessage).catch(handleError);
-	} else if (slackMessage.text.startsWith('skip')) {
-		rota(slackMessage).catch(handleError);
+	} else if (slackMessage.command.startsWith('skip')) {
+		skip(slackMessage).catch(handleError);
 	} else {
 		sendEphemeralMessage(slackMessage, 'Invalid command').catch(handleError);
 	}

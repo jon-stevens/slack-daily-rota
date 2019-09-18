@@ -47,24 +47,41 @@ const appData = {
 	title: 'Slack Rota App'
 };
 
-function who(req, res) {
-	const slackMessage = {
-		text: 'today'
-	};
+function doPostMessage(res, slackMessage) {
 	worker.postMessage(slackMessage);
 	res.render('index', { title: appData.title, message: 'Message sent to slack!'});
 }
 
-app.post('/who', (req, res) => {
-	who(req, res);
-});
-
-app.get('/who', (req, res) => {
-	who(req, res);
-});
+function who(res, command) {
+	const slackMessage = {
+        command
+	};     
+	doPostMessage(res, slackMessage);
+}
 
 app.get('/', (req, res) => {
 	res.render('index', { title: appData.title, message: appData.title});
+});
+
+app.post('/who', (req, res) => {
+    who(res, 'today');
+});
+
+app.get('/who', (req, res) => {
+	who(res, 'today');
+});
+
+app.post('/actions', (req, res) => {
+    const payload = JSON.parse(req.body.payload);
+	const slackMessage = {
+        command: 'skip',
+        requester: payload.user.name
+	};    
+    if(payload.actions[0].text.text.includes(config.skipButtonMessage)) {
+        doPostMessage(res, slackMessage);
+    } else {
+        res.render('index', { title: appData.title, message: 'Unable to perform action.'});
+    };
 });
 
 module.exports = {

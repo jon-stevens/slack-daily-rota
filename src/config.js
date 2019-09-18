@@ -4,6 +4,7 @@ dotenv.config();
 
 const config = () => {
     return {
+        skipButtonMessage: 'is not available :shrug:',
         slackToken: process.env.SLACK_TOKEN,
         slackOAuthToken: process.env.SLACK_OAUTH_TOKEN,
         slackClientId: process.env.SLACK_CLIENT_ID,
