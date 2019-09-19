@@ -199,7 +199,6 @@ class WhosNext {
 			];
 
 			if (this.requester) {
-				console.log('there is a requester');
 				blocks.push({
 					"type": "context",
 					"elements": [

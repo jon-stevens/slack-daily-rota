@@ -8,13 +8,13 @@ Our team rotates daily standup running amongst team members. We sometimes forget
 ## Is it just for standup meetings?
 That was the original idea, but there's no reason it can't be adapted for other activities like:
 * Support/on-call rotas
-* Cleaning schedule
-* Who's turn is it to make the teas
+* Boring task schedules
+* "Who's turn is it to make the teas?"
 * "Your mama" jokes
-* You get the idea...
+* And so on ...
 
 ## Features
-* Sends a message to Slack (via hooks) following the order of team members specified
+* Sends a message to Slack (via incoming webhooks) following the order of team members specified
 * @ mentions the user so they are notified
 * Configurable random message combinations
 * Ability to exclude certain days (Weekends or public holidays)
@@ -65,3 +65,26 @@ VALUES
 ```
 `row_data` is the key field here as this is where the position in the rota is stored. The app simply works by reading the `rotaIndex` value from the JSON blob and finding who has that position in the rota.
 
+## Slack Configuration
+
+Another essential part of the app is configuring Slack correctly. There are 3 main aspects to have to enable for your Slack channel:
+
+* Incoming Webhooks
+* Interactive components
+* Slash commands
+
+### Incoming Webhooks
+
+Incoming webhooks allows the app to post messages from your Node server. Ensure they are enabled in your [app config](https://api.slack.com/apps/).
+
+![Image of incoming webhook page](pic1.png)
+
+## Interactive components
+
+![Image of interactive components page](pic2.png)
+
+## Slash commands
+
+![Image of slash commands page](pic3.png)
+
+ℹ️ If you're running/testing the app locally, you may need to proxy your localhost to a publicly available endpoint for use in Slack. [Ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok) seems to be the go-to tool for doing this.
