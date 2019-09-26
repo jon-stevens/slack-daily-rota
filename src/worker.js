@@ -159,6 +159,10 @@ class WhosNext {
 		{
 			name: 'Isabel',
 			username: '<@UGNC53L3V>'
+		},
+		{
+			name: 'Firas',
+			username: '<@UNS70DR0D>'
 		}];
 		this.nonWeekDays = [6, 0]; // Saturday (6) and Sunday (0)
 		this.nonWorkDates = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates

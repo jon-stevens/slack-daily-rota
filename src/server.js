@@ -43,13 +43,13 @@ app.post('/auth/redirect', (req, res) => {
     });
 });
 
-const appData = {
+const webAppData = {
 	title: 'Slack Rota App'
 };
 
 function doPostMessage(res, slackMessage) {
 	worker.postMessage(slackMessage);
-	res.render('index', { title: appData.title, message: 'Message sent to slack!'});
+	res.render('index', { title: webAppData.title, message: 'Message sent to slack!'});
 }
 
 function who(res, command) {
@@ -60,7 +60,7 @@ function who(res, command) {
 }
 
 app.get('/', (req, res) => {
-	res.render('index', { title: appData.title, message: appData.title});
+	res.render('index', { title: webAppData.title, message: webAppData.title});
 });
 
 app.post('/who', (req, res) => {
@@ -80,7 +80,7 @@ app.post('/actions', (req, res) => {
     if(payload.actions[0].text.text.includes(config.skipButtonMessage)) {
         doPostMessage(res, slackMessage);
     } else {
-        res.render('index', { title: appData.title, message: 'Unable to perform action.'});
+        res.render('index', { title: webAppData.title, message: 'Unable to perform action.'});
     };
 });
 
