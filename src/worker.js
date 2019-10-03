@@ -121,10 +121,6 @@ class WhosNext {
 			username: '<@U0GJL3M8D>'
 		},
 		{
-			name: 'Marleen',
-			username: '<@U70KW5VHV>'
-		},
-		{
 			name: 'Amit',
 			username: '<@UHV8K7VN3>'
 		},
@@ -141,8 +137,8 @@ class WhosNext {
 			username: '<@U0GJA3NF6>'
 		},
 		{
-			name: 'Dmitry',
-			username: '<@U4ENT1HUJ>'
+			name: 'Leandro',
+			username: '<@UCJLAS1QE>'
 		},
 		{
 			name: 'Jon S.',
@@ -194,7 +190,8 @@ class WhosNext {
 							"type": "button",
 							"text": {
 								"type": "plain_text",
-								"text": `${person.name} ${config.skipButtonMessage}`,
+								// "text": `${person.name} ${config.skipButtonMessage}`,
+								"text": `Skip to next person :point_right:`,
 								"emoji": true
 							}
 						}
