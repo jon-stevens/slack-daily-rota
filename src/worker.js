@@ -101,7 +101,7 @@ function generateRandomMessage(id, pro, pos) {
 		`Clear your diaries because ${id} is going to standup at you today, and it doesn't get much better than that! :excited:`,
 		`Future ${id} just appeared in a dustbin and told me that past ${id} did the best most amazing standup this morning, so make sure you're wearing socks.`,
         `The seat of your trousers are going to be thinner and more strained than that teabag that I saw Tom punching the other day, becasue ${id} is going to do a standup! :tea:`,
-        `Are you feeling uncomfortable today, and shifting about awkwardly, like a rusty gearbox? Me too. My shoes used to be made of cats though. ${id} today for a standup! ${pro} would never wear cat shoes.`
+        `Are you feeling uncomfortable today, and shifting about awkwardly, like a rusty gearbox? Me too. My shoes used to be made of cats though. ${id} today for a standup! ${pro} would never wear cat shoes.`,
 		`Imagine a moth doing a standup! How rubbish would that be! Luckily ${id} is doing it today, and not a moth. `,
 		`Last time ${id} did a standup, my socks fell off and I had a dream about plums. So I'm looking forward to this morning. :happy-sad:`,
 		`Last time Rakesh pushed me down the stairs, ${id} came to me in a dream and said don't worry. One day I will be doing a standup and you will forget about your broken legs. ${id} we love you. :boxing_glove:`,
@@ -221,8 +221,7 @@ class WhosNext {
 							"type": "button",
 							"text": {
 								"type": "plain_text",
-								// "text": `${person.name} ${config.skipButtonMessage}`,
-								"text": `Skip to next person :point_right:`,
+								"text": config.skipButtonMessage,
 								"emoji": true
 							}
 						}
