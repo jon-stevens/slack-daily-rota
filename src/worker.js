@@ -117,7 +117,8 @@ function generateRandomMessage(id, pro, pos) {
 		`Take me far away, and put some cheese in my ears, because ${id} is doing the standup today. I am filled with dread.`,
 		`Whenever ${id} does the standup, my feet shift uncomfortably, like an embarrassed gearbox. But it is not from boredom, or guilt, or worrying about that unresolved blood debt. It's because ${id} has a voice like a bassoon.`,
 		`:cat2: is doing a standup this morning. Oh wait it's ${id} I think. Not :cat2: who is a cat and therefore a total dumbo. :happy-sad:`,
-		`In addition to running standup today, ${id} will also be inspecting every team member's socks :socks:`
+		`In addition to running standup today, ${id} will also be inspecting every team member's socks :socks:`,
+		`${id} was put on the naughty list by :santa: last Christmas so ${pro} punched Santa's beard off with an uppercut.\n\nDon't bring it up though or it might get a little tense at standup today :blow-wave:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
@@ -140,12 +141,6 @@ class WhosNext {
 		{
 			name: 'Tom',
 			username: '<@U14GHSETH>',
-            pro: 'he',
-            pos: 'his'
-		},
-		{
-			name: 'Slava',
-			username: '<@UEBPZBRR9>',
             pro: 'he',
             pos: 'his'
 		},
@@ -198,7 +193,7 @@ class WhosNext {
             pos: 'his'
 		}];
 		this.nonWeekDays = [6, 0]; // Saturday (6) and Sunday (0)
-		this.nonWorkDates = ['Thu Aug 22 2019', 'Mon Aug 26 2019']; // Public holidays and one-off out of office dates
+		this.nonWorkDates = ['Wed Dec 25 2019', 'Thu Dec 26 2019', 'Fri Dec 27 2019', 'Wed Jan 1 2020']; // Public holidays and one-off out of office dates
 		this.dailyAlertTime24h = '0830';
 		this.rotaIndex = 0;
 		this.slackMessage = slackMessage.command;
@@ -252,7 +247,7 @@ class WhosNext {
 
 			return sendMessage(this.slackMessage, { blocks, text });
 		} else {
-			const text = 'No standup today :sleeping: :palm_tree:';
+			const text = 'Happy holidays! :gift: :christmas_tree:';
 			return sendMessage(this.slackMessage, {
 				blocks: [{
 					type: 'section',
