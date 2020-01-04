@@ -117,8 +117,7 @@ function generateRandomMessage(id, pro, pos) {
 		`Take me far away, and put some cheese in my ears, because ${id} is doing the standup today. I am filled with dread.`,
 		`Whenever ${id} does the standup, my feet shift uncomfortably, like an embarrassed gearbox. But it is not from boredom, or guilt, or worrying about that unresolved blood debt. It's because ${id} has a voice like a bassoon.`,
 		`:cat2: is doing a standup this morning. Oh wait it's ${id} I think. Not :cat2: who is a cat and therefore a total dumbo. :happy-sad:`,
-		`In addition to running standup today, ${id} will also be inspecting every team member's socks :socks:`,
-		`${id} was put on the naughty list by :santa: last Christmas so ${pro} punched Santa's beard off with an uppercut.\n\nDon't bring it up though or it might get a little tense at standup today :blow-wave:`
+		`In addition to running standup today, ${id} will also be inspecting every team member's socks :socks:`
 	];
 
 	return messages[getRandomInt(0, messages.length - 1)];
@@ -247,7 +246,7 @@ class WhosNext {
 
 			return sendMessage(this.slackMessage, { blocks, text });
 		} else {
-			const text = 'Happy holidays! :gift: :christmas_tree:';
+			const text = 'No standup today :sleeping: :palm_tree:';
 			return sendMessage(this.slackMessage, {
 				blocks: [{
 					type: 'section',
