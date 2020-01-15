@@ -132,26 +132,8 @@ class WhosNext {
             pos: 'her'
 		},
 		{
-			name: 'Amit',
-			username: '<@UHV8K7VN3>',
-            pro: 'he',
-            pos: 'his'
-		},
-		{
-			name: 'Tom',
-			username: '<@U14GHSETH>',
-            pro: 'he',
-            pos: 'his'
-		},
-		{
-			name: 'Rakesh',
-			username: '<@U0GJA3NF6>',
-            pro: 'he',
-            pos: 'his'
-		},
-		{
-			name: 'Leandro',
-			username: '<@UCJLAS1QE>',
+			name: 'Tim',
+			username: '<@U0J5A4F35>',
             pro: 'he',
             pos: 'his'
 		},
@@ -162,22 +144,46 @@ class WhosNext {
             pos: 'his'
 		},
 		{
-			name: 'Anibe',
-			username: '<@U83QSM30D>',
+			name: 'Jon Y.',
+			username: '<@U0GM3HM4J>',
+            pro: 'he',
+            pos: 'his'
+		},				
+		{
+			name: 'Tom',
+			username: '<@U14GHSETH>',
             pro: 'he',
             pos: 'his'
 		},
 		{
-			name: 'Mirren',
-			username: '<@UDQQ3RHPF>',
-            pro: 'she',
-            pos: 'her'
+			name: 'Bret',
+			username: '<@UPD62Q0BE>',
+            pro: 'he',
+            pos: 'his'
+		},		
+		{
+			name: 'Leandro',
+			username: '<@UCJLAS1QE>',
+            pro: 'he',
+            pos: 'his'
 		},
 		{
-			name: 'Isabel',
-			username: '<@UGNC53L3V>',
-            pro: 'she',
-            pos: 'her'
+			name: 'Hilverd :hilverd:',
+			username: '<@U0GDK2ETF>',
+            pro: 'he',
+            pos: 'his'
+		},
+		{
+			name: 'Ed',
+			username: '<@U0GE0LM1U>',
+            pro: 'he',
+            pos: 'his'
+		},
+		{
+			name: 'Alexis',
+			username: '<@UQR8HQS11>',
+            pro: 'he',
+            pos: 'his'
 		},
 		{
 			name: 'Firas',
@@ -186,8 +192,8 @@ class WhosNext {
             pos: 'his'
 		},
 		{
-			name: 'Bret',
-			username: '<@UPD62Q0BE>',
+			name: 'Rakesh',
+			username: '<@U0GJA3NF6>',
             pro: 'he',
             pos: 'his'
 		}];
