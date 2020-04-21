@@ -125,12 +125,7 @@ function generateRandomMessage(id, pro, pos) {
 
 class WhosNext {
 	constructor(slackMessage) {
-		this.people = [{
-			name: 'Colleen',
-			username: '<@U0GJL3M8D>',
-            pro: 'she',
-            pos: 'her'
-		},
+		this.people = [
 		{
 			name: 'Tim',
 			username: '<@U0J5A4F35>',
@@ -190,13 +185,8 @@ class WhosNext {
 			username: '<@UNS70DR0D>',
             pro: 'he',
             pos: 'his'
-		},
-		{
-			name: 'Rakesh',
-			username: '<@U0GJA3NF6>',
-            pro: 'he',
-            pos: 'his'
-		}];
+		}
+		];
 		this.nonWeekDays = [6, 0]; // Saturday (6) and Sunday (0)
 		this.nonWorkDates = ['Fri Apr 10 2020', 'Mon Apr 13 2020', 'Mon May 8 2020', 'Mon May 25 2020', 'Fri Dec 25 2020', 'Mon Dec 28 2020']; // Public holidays and one-off out of office dates
 		this.dailyAlertTime24h = '0830';
