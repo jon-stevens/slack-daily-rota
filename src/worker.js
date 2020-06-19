@@ -151,8 +151,8 @@ class WhosNext {
             pos: 'his'
 		},
 		{
-			name: 'Bret',
-			username: '<@UPD62Q0BE>',
+			name: 'Leandro',
+			username: '<@UCJLAS1QE>',
             pro: 'he',
             pos: 'his'
 		},		
@@ -181,12 +181,6 @@ class WhosNext {
             pos: 'his'
 		},
 		{
-			name: 'Firas',
-			username: '<@UNS70DR0D>',
-            pro: 'he',
-            pos: 'his'
-		},
-			{
 			name: 'Lee',
 			username: '<@UUC0BRY0J>',
             pro: 'he',
