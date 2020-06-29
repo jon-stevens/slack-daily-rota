@@ -49,8 +49,10 @@ function sendEphemeralMessage(slackMessage, text) {
 }
 
 function getRotaData() {
+	console.log('getRotaData');
 	return new Promise((resolve, reject) => {
 		db.query('SELECT row_data FROM rota_data WHERE row_id=1;', (err, res) => {
+			console.log('getRotaData res', res);
 			if (err) {
 				reject(err);
 				throw err;
