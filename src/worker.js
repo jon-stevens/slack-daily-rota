@@ -278,6 +278,9 @@ class WhosNext {
 			const dateLastUpdated = fileData.date;
 			const today = new Date().toDateString();
 
+			console.log('index: ', index);
+			console.log('numberOfPeople: ', numberOfPeople);
+
 			// if (today === dateLastUpdated) {
 			if (fileData) {
 				index = rotaPositionIndex;
