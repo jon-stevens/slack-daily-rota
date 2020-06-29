@@ -49,11 +49,9 @@ function sendEphemeralMessage(slackMessage, text) {
 }
 
 function getRotaData() {
-	console.log('getRotaData');
 	return new Promise((resolve, reject) => {
 		db.query('SELECT row_data FROM rota_data WHERE row_id=1;', (err, res) => {
 			if (err) {
-				console.log('err: ', err);
 				reject(err);
 				throw err;
 			}
@@ -207,8 +205,7 @@ class WhosNext {
 		const today = new Date();
 		const isTodayWeekend = this.nonWeekDays.includes(today.getDay());
 		const isTodayOfficeHoliday = this.nonWorkDates.includes(today.toDateString());
-		console.log('isTodayWeekend: ', isTodayWeekend);
-		console.log('isTodayOfficeHoliday: ', isTodayOfficeHoliday);
+
 		if (!isTodayWeekend && !isTodayOfficeHoliday) {
 			const person = await this._getActivePerson();
 			console.log('person: ', person);
@@ -287,7 +284,7 @@ class WhosNext {
 			}
 
 			updateRotaData({
-				rotaIndex: numberOfPeople === index ? 0 : parseInt(index, 10) + 1,
+				rotaIndex: numberOfPeople >= index  ? 0 : parseInt(index, 10) + 1,
 				date: today
 			});
 			return this.people[index];
