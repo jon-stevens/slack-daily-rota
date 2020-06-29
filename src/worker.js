@@ -272,28 +272,34 @@ class WhosNext {
 	_getActivePerson() {
 		let index = 0;
 
-		return getRotaData().then(fileData => {
-			const numberOfPeople = this.people.length - 1;
-			const rotaPositionIndex = fileData.rotaIndex;
-			const dateLastUpdated = fileData.date;
-			const today = new Date().toDateString();
+		console.log('_getActivePerson');
 
-			
-			// if (today === dateLastUpdated) {
-			if (fileData) {
-				index = rotaPositionIndex;
-			}
+		try {
+			return getRotaData().then(fileData => {
+				const numberOfPeople = this.people.length - 1;
+				const rotaPositionIndex = fileData.rotaIndex;
+				const dateLastUpdated = fileData.date;
+				const today = new Date().toDateString();
+	
 				
-			console.log('index: ', index);
-			console.log('numberOfPeople: ', numberOfPeople);
-			updateRotaData({
-				rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
-				date: today
+				// if (today === dateLastUpdated) {
+				if (fileData) {
+					index = rotaPositionIndex;
+				}
+					
+				console.log('index: ', index);
+				console.log('numberOfPeople: ', numberOfPeople);
+				updateRotaData({
+					rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
+					date: today
+				});
+				return this.people[index];
+			}).catch(e => {
+				console.log('unable to get active person', e);
 			});
-			return this.people[index];
-		}).catch(e => {
-			console.log('unable to get active person', e);
-		});
+		} catch (e) {
+			console.log('_getActivePerson error: ', e);
+		}
 	}
 }
 
@@ -316,7 +322,7 @@ function skip(slackMessage) {
 
 function handle(slackMessage) {
 	if (slackMessage.command.startsWith('today')) {
-		rota(slackMessage).catch(handleError);
+		return rota(slackMessage).catch(handleError);
 	} else if (slackMessage.command.startsWith('skip')) {
 		skip(slackMessage).catch(handleError);
 	} else {

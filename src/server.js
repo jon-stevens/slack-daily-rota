@@ -48,8 +48,8 @@ const webAppData = {
 };
 
 function doPostMessage(res, slackMessage) {
-	worker.postMessage(slackMessage);
-	res.render('index', { title: webAppData.title, message: 'Message sent to slack!'});
+    worker.postMessage(slackMessage);
+	res.render('index', { title: webAppData.title, message: 'Message sent to slack!', slackMessage: JSON.stringify(slackMessage)});
 }
 
 function who(res, command) {
