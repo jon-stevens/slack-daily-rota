@@ -9,7 +9,13 @@ const db = new Client({
 	ssl: config.appMode !== 'dev'
 });
 
-db.connect();
+db.connect(err => {
+	if (err) {
+	  console.error('db connection error', err.stack)
+	} else {
+	  console.log('connected to db')
+	}
+  });
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
