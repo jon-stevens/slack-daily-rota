@@ -67,6 +67,7 @@ function getRotaData() {
 			const data = res.rows[0].row_data;
 			resolve(JSON.parse(data));
 		});
+		console.log('post db query');
 	});
 }
 
