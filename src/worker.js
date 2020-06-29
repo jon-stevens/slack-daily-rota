@@ -15,7 +15,7 @@ db.connect(err => {
 	} else {
 	  console.log('connected to db')
 	}
-  });
+});
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
@@ -57,6 +57,7 @@ function sendEphemeralMessage(slackMessage, text) {
 function getRotaData() {
 	console.log('getRotaData');
 	return new Promise((resolve, reject) => {
+		console.log('pre db query');
 		db.query('SELECT row_data FROM rota_data WHERE row_id=1;', (err, res) => {
 			console.log('getRotaData res', res);
 			if (err) {
