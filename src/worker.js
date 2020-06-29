@@ -16,6 +16,7 @@ db.connect(err => {
 	  console.log('connected to db')
 	}
 });
+db.on('error', err => console.log('ERR|> ', err));
 
 function sendMessage(slackMessage, payload, isEphemeral = false) {
 	const requestBody = {
@@ -283,33 +284,28 @@ class WhosNext {
 		let index = 0;
 
 		console.log('_getActivePerson');
+		return await getRotaData().then(fileData => {
+			const numberOfPeople = this.people.length - 1;
+			const rotaPositionIndex = fileData.rotaIndex;
+			const dateLastUpdated = fileData.date;
+			const today = new Date().toDateString();
 
-		try {
-			return await getRotaData().then(fileData => {
-				const numberOfPeople = this.people.length - 1;
-				const rotaPositionIndex = fileData.rotaIndex;
-				const dateLastUpdated = fileData.date;
-				const today = new Date().toDateString();
-	
+			
+			// if (today === dateLastUpdated) {
+			if (fileData) {
+				index = rotaPositionIndex;
+			}
 				
-				// if (today === dateLastUpdated) {
-				if (fileData) {
-					index = rotaPositionIndex;
-				}
-					
-				console.log('index: ', index);
-				console.log('numberOfPeople: ', numberOfPeople);
-				updateRotaData({
-					rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
-					date: today
-				});
-				return this.people[index];
-			}).catch(e => {
-				console.log('unable to get active person', e);
+			console.log('index: ', index);
+			console.log('numberOfPeople: ', numberOfPeople);
+			updateRotaData({
+				rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
+				date: today
 			});
-		} catch (e) {
-			console.log('_getActivePerson error: ', e);
-		}
+			return this.people[index];
+		}).catch(e => {
+			console.log('unable to get active person', e);
+		});
 	}
 }
 
