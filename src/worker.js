@@ -284,7 +284,7 @@ class WhosNext {
 			}
 
 			updateRotaData({
-				rotaIndex: numberOfPeople >= index  ? 0 : parseInt(index, 10) + 1,
+				rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
 				date: today
 			});
 			return this.people[index];
