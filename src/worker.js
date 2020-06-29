@@ -52,6 +52,7 @@ function getRotaData() {
 	return new Promise((resolve, reject) => {
 		db.query('SELECT row_data FROM rota_data WHERE row_id=1;', (err, res) => {
 			if (err) {
+				console.log('err: ', err);
 				reject(err);
 				throw err;
 			}
@@ -210,6 +211,7 @@ class WhosNext {
 		if (!isTodayWeekend && !isTodayOfficeHoliday) {
 			const person = await this._getActivePerson();
 			const msgTxt = generateRandomMessage(`*${person.name}* (${person.username})`, person.pro, person.pos);
+			console.log('msgTxt: ', msgTxt);
 			const blocks = [
 				{
 					type: 'section',
