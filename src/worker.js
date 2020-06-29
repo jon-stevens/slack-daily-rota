@@ -278,14 +278,14 @@ class WhosNext {
 			const dateLastUpdated = fileData.date;
 			const today = new Date().toDateString();
 
-			console.log('index: ', index);
-			console.log('numberOfPeople: ', numberOfPeople);
-
+			
 			// if (today === dateLastUpdated) {
 			if (fileData) {
 				index = rotaPositionIndex;
 			}
-
+				
+			console.log('index: ', index);
+			console.log('numberOfPeople: ', numberOfPeople);
 			updateRotaData({
 				rotaIndex: index >= numberOfPeople ? 0 : parseInt(index, 10) + 1,
 				date: today
