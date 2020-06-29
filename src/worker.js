@@ -205,6 +205,8 @@ class WhosNext {
 		const today = new Date();
 		const isTodayWeekend = this.nonWeekDays.includes(today.getDay());
 		const isTodayOfficeHoliday = this.nonWorkDates.includes(today.toDateString());
+		console.log('isTodayWeekend: ', isTodayWeekend);
+		console.log('isTodayOfficeHoliday: ', isTodayOfficeHoliday);
 		if (!isTodayWeekend && !isTodayOfficeHoliday) {
 			const person = await this._getActivePerson();
 			const msgTxt = generateRandomMessage(`*${person.name}* (${person.username})`, person.pro, person.pos);
