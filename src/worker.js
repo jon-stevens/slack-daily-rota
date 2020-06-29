@@ -279,13 +279,13 @@ class WhosNext {
 		return this.showName();
 	}
 
-	_getActivePerson() {
+	async _getActivePerson() {
 		let index = 0;
 
 		console.log('_getActivePerson');
 
 		try {
-			return getRotaData().then(fileData => {
+			return await getRotaData().then(fileData => {
 				const numberOfPeople = this.people.length - 1;
 				const rotaPositionIndex = fileData.rotaIndex;
 				const dateLastUpdated = fileData.date;
